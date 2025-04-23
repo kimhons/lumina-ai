@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: workflow-service
+  datasource:
+    url: jdbc:postgresql://postgres:5432/lumina_workflow
+    username: lumina
+    password: ${WORKFLOW_DB_PASSWORD:lumina_password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+server:
+  port: 8084
+  servlet:
+    context-path: /
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+workflow:
+  execution:
+    max-concurrent-workflows: 100
+    max-concurrent-steps-per-workflow: 10
+    default-timeout-seconds: 300
+    default-retry-count: 3
+    polling-interval-ms: 1000
+  monitoring:
+    stalled-workflow-threshold-minutes: 30
+    stalled-step-threshold-minutes: 15
+    cleanup-completed-after-days: 30
+    cleanup-failed-after-days: 90
+  collaboration:
+    team-formation-strategy: capability-based
+    context-sync-interval-seconds: 60
+    resource-negotiation-timeout-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    ai.lumina: DEBUG
+    org.springframework: INFO
+    org.hibernate: INFO

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  workflow-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lumina-workflow-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - WORKFLOW_DB_PASSWORD=secure_password
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
+    depends_on:
+      - postgres
+    networks:
+      - lumina-network
+
+  postgres:
+    image: postgres:14
+    container_name: lumina-workflow-postgres
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_DB=lumina_workflow
+      - POSTGRES_USER=lumina
+      - POSTGRES_PASSWORD=secure_password
+    volumes:
+      - workflow-postgres-data:/var/lib/postgresql/data
+    networks:
+      - lumina-network
+
+networks:
+  lumina-network:
+    external: true
+
+volumes:
+  workflow-postgres-data:

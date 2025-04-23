@@ -1,0 +1,99 @@
+/* EndUserCoreFramework.css */
+
+.enduser-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.enduser-footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.enduser-footer-left {
+  display: flex;
+  gap: 1rem;
+}
+
+.memory-tracker, .chat-length-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease;
+}
+
+.memory-tracker.critical {
+  background-color: rgba(255, 0, 0, 0.1);
+  animation: pulse 2s infinite;
+}
+
+.chat-length-indicator.warning {
+  background-color: rgba(255, 165, 0, 0.1);
+  animation: pulse 2s infinite;
+}
+
+.memory-bar, .length-bar {
+  width: 100px;
+  height: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.memory-fill {
+  height: 100%;
+  background-color: var(--primary-color, #007AFF);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.memory-tracker.critical .memory-fill {
+  background-color: var(--error-color, #FF3B30);
+}
+
+.length-fill {
+  height: 100%;
+  background-color: var(--primary-color, #007AFF);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.chat-length-indicator.warning .length-fill {
+  background-color: var(--warning-color, #FF9500);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .enduser-footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .memory-bar, .length-bar {
+    width: 60px;
+  }
+}
