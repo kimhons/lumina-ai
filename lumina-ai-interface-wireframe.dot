@@ -1,0 +1,68 @@
+digraph G {
+  graph [fontname="Arial", fontsize=12, nodesep=0.8, ranksep=0.8, splines=ortho];
+  node [fontname="Arial", fontsize=12, shape=box, style="rounded,filled", fillcolor="#f5f5f5", color="#cccccc"];
+  edge [fontname="Arial", fontsize=10];
+
+  // Main components
+  sidebar [label="Sidebar\n(Chronological Organization)", fillcolor="#202123", fontcolor="white"];
+  main_content [label="Main Content Area", fillcolor="#343541", fontcolor="white"];
+  
+  // Sidebar components
+  new_chat [label="New Chat Button", fillcolor="#202123", fontcolor="white"];
+  today [label="Today's Conversations", fillcolor="#202123", fontcolor="white"];
+  yesterday [label="Yesterday's Conversations", fillcolor="#202123", fontcolor="white"];
+  previous [label="Previous 7 Days", fillcolor="#202123", fontcolor="white"];
+  account [label="My Account", fillcolor="#202123", fontcolor="white"];
+  
+  // Main content components
+  header [label="Chat Header", fillcolor="#343541", fontcolor="white"];
+  model_selector [label="Model Selector", fillcolor="#343541", fontcolor="white"];
+  feature_toggles [label="Feature Toggles", fillcolor="#343541", fontcolor="white"];
+  chat_container [label="Chat Container", fillcolor="#343541", fontcolor="white"];
+  empty_state [label="Empty State", fillcolor="#343541", fontcolor="white"];
+  suggestion_cards [label="Suggestion Cards", fillcolor="#444654", fontcolor="white"];
+  messages [label="Messages", fillcolor="#343541", fontcolor="white"];
+  user_message [label="User Message", fillcolor="#343541", fontcolor="white"];
+  assistant_message [label="Assistant Message", fillcolor="#444654", fontcolor="white"];
+  input_area [label="Input Area", fillcolor="#343541", fontcolor="white"];
+  input_box [label="Input Box", fillcolor="#40414F", fontcolor="white"];
+  input_tools [label="Input Tools", fillcolor="#343541", fontcolor="white"];
+  context_indicator [label="Context Indicator", fillcolor="#343541", fontcolor="white"];
+  
+  // Enhanced features
+  memory_panel [label="Memory Tracking Panel", fillcolor="#202123", fontcolor="white"];
+  thinking_display [label="Visual Thinking Display", fillcolor="#40414F", fontcolor="white"];
+  task_status [label="Autonomous Task Status", fillcolor="#40414F", fontcolor="white"];
+  
+  // Memory panel components
+  memory_search [label="Memory Search", fillcolor="#40414F", fontcolor="white"];
+  memory_items [label="Memory Items", fillcolor="#2A2B32", fontcolor="white"];
+  
+  // Visual thinking components
+  thinking_steps [label="Thinking Steps", fillcolor="#40414F", fontcolor="white"];
+  
+  // Task status components
+  progress_bar [label="Progress Bar", fillcolor="#2A2B32", fontcolor="white"];
+  subtasks [label="Subtasks", fillcolor="#40414F", fontcolor="white"];
+  task_controls [label="Task Controls", fillcolor="#40414F", fontcolor="white"];
+  
+  // Relationships
+  sidebar -> {new_chat, today, yesterday, previous, account};
+  main_content -> {header, chat_container, input_area};
+  header -> {model_selector, feature_toggles};
+  feature_toggles -> {memory_panel, thinking_display, task_status} [style=dashed];
+  chat_container -> {empty_state, messages};
+  empty_state -> suggestion_cards;
+  messages -> {user_message, assistant_message, thinking_display, task_status};
+  input_area -> {input_box, input_tools, context_indicator};
+  
+  memory_panel -> {memory_search, memory_items};
+  thinking_display -> thinking_steps;
+  task_status -> {progress_bar, subtasks, task_controls};
+  
+  // Layout
+  {rank=same; sidebar; main_content;}
+  {rank=same; new_chat; header;}
+  {rank=same; account; input_area;}
+  {rank=same; memory_panel; thinking_display; task_status;}
+}

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lumina-config
+data:
+  log_level: "WARN"  # Less verbose logging for production environment
+  feature_flags: '{"visualThinking": true, "memoryTracking": true, "chatLengthMonitoring": true, "experimentalFeatures": false}'
+  monitoring_enabled: "true"
+  metrics_collection_interval: "15"
+  backup_schedule: "0 2 * * *"  # Daily backup at 2 AM

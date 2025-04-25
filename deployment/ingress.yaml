@@ -1,0 +1,69 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lumina-ai-ingress
+  namespace: lumina-ai
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  tls:
+  - hosts:
+    - app.lumina-ai.com
+    - api.lumina-ai.com
+    - www.lumina-ai.com
+    secretName: lumina-tls-cert
+  rules:
+  - host: app.lumina-ai.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ui-service
+            port:
+              number: 80
+  - host: api.lumina-ai.com
+    http:
+      paths:
+      - path: /deployment
+        pathType: Prefix
+        backend:
+          service:
+            name: deployment-service
+            port:
+              number: 8080
+      - path: /provider
+        pathType: Prefix
+        backend:
+          service:
+            name: provider-service
+            port:
+              number: 8081
+      - path: /governance
+        pathType: Prefix
+        backend:
+          service:
+            name: governance-service
+            port:
+              number: 8082
+      - path: /enduser
+        pathType: Prefix
+        backend:
+          service:
+            name: enduser-service
+            port:
+              number: 8083
+  - host: www.lumina-ai.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: marketing-website
+            port:
+              number: 80

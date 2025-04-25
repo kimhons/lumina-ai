@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lumina-config
+  namespace: lumina-ai
+data:
+  api_gateway_url: "http://api-gateway.lumina-ai.svc.cluster.local"
+  auth_service_url: "http://auth-service.lumina-ai.svc.cluster.local"
+  provider_service_url: "http://provider-service.lumina-ai.svc.cluster.local:8081"
+  deployment_service_url: "http://deployment-service.lumina-ai.svc.cluster.local:8080"
+  governance_service_url: "http://governance-service.lumina-ai.svc.cluster.local:8082"
+  enduser_service_url: "http://enduser-service.lumina-ai.svc.cluster.local:8083"
+  log_level: "INFO"
+  feature_flags: '{"visualThinking": true, "memoryTracking": true, "chatLengthMonitoring": true}'

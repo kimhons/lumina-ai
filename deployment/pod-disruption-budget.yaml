@@ -1,0 +1,65 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ui-service-pdb
+  namespace: lumina-ai
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: ui-service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: deployment-service-pdb
+  namespace: lumina-ai
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: deployment-service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: provider-service-pdb
+  namespace: lumina-ai
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: provider-service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: governance-service-pdb
+  namespace: lumina-ai
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: governance-service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: enduser-service-pdb
+  namespace: lumina-ai
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: enduser-service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: marketing-website-pdb
+  namespace: lumina-ai
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: marketing-website

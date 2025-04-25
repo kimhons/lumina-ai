@@ -1,0 +1,70 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: lumina-services-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: lumina-ai
+  namespaceSelector:
+    matchNames:
+      - lumina-ai
+      - lumina-ai-dev
+      - lumina-ai-staging
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /actuator/prometheus
+  - port: metrics
+    interval: 15s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: lumina-ai-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+  - name: lumina-ai.rules
+    rules:
+    - alert: HighCPUUsage
+      expr: sum(rate(container_cpu_usage_seconds_total{namespace=~"lumina-ai.*", container!=""}[5m])) by (pod) > 0.8
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High CPU usage detected"
+        description: "Pod {{ $labels.pod }} has high CPU usage (> 80%) for more than 5 minutes."
+    
+    - alert: HighMemoryUsage
+      expr: sum(container_memory_usage_bytes{namespace=~"lumina-ai.*", container!=""}) by (pod) / sum(container_spec_memory_limit_bytes{namespace=~"lumina-ai.*", container!=""}) by (pod) > 0.85
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High memory usage detected"
+        description: "Pod {{ $labels.pod }} has high memory usage (> 85%) for more than 5 minutes."
+    
+    - alert: PodCrashLooping
+      expr: rate(kube_pod_container_status_restarts_total{namespace=~"lumina-ai.*"}[15m]) > 0.2
+      for: 15m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Pod is crash looping"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is crash looping."
+    
+    - alert: EndUserServiceHighLatency
+      expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="enduser-service"}[5m])) by (le)) > 2
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "EndUser Service high latency"
+        description: "EndUser Service is experiencing high latency (95th percentile > 2s) for more than 10 minutes."

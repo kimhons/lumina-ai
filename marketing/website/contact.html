@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Lumina AI</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="description" content="Get in touch with Lumina AI for inquiries, demos, partnerships, or support. We're here to help you transform your enterprise with intelligent AI collaboration.">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="../images/lumina_ai_logo.png" alt="Lumina AI Logo" class="logo">
+                <h1>LUMINA AI</h1>
+            </div>
+            <nav class="main-nav">
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="case-studies.html">Case Studies</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html" class="active cta-button">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>We're here to help you transform your enterprise with intelligent AI collaboration</p>
+        </div>
+    </section>
+
+    <section class="contact-options">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Request a Demo</h3>
+                    <p>See Lumina AI in action with a personalized demonstration tailored to your industry and use cases.</p>
+                    <a href="#demo-form" class="contact-link">Schedule a Demo <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Partnership Inquiries</h3>
+                    <p>Explore partnership opportunities to integrate your solutions with Lumina AI or join our partner ecosystem.</p>
+                    <a href="#partnership-form" class="contact-link">Become a Partner <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Customer Support</h3>
+                    <p>Get assistance with implementation, configuration, or troubleshooting from our expert support team.</p>
+                    <a href="#support-form" class="contact-link">Contact Support <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3>Media Inquiries</h3>
+                    <p>Connect with our communications team for press releases, interviews, or media resources.</p>
+                    <a href="#media-form" class="contact-link">Media Contact <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-form-section" id="demo-form">
+        <div class="container">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Request a Demo</h2>
+                    <p>Fill out the form below to schedule a personalized demonstration of Lumina AI.</p>
+                </div>
+                
+                <form class="contact-form" id="demoRequestForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Job Title *</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Business Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry">Industry *</label>
+                        <select id="industry" name="industry" required>
+                            <option value="" disabled selected>Select your industry</option>
+                            <option value="financial-services">Financial Services</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="retail">Retail</option>
+                            <option value="technology">Technology</option>
+                            <option value="education">Education</option>
+                            <option value="government">Government</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-size">Company Size *</label>
+                        <select id="company-size" name="company-size" required>
+                            <option value="" disabled selected>Select company size</option>
+                            <option value="1-50">1-50 employees</option>
+                            <option value="51-200">51-200 employees</option>
+                            <option value="201-500">201-500 employees</option>
+                            <option value="501-1000">501-1000 employees</option>
+                            <option value="1001-5000">1001-5000 employees</option>
+                            <option value="5001+">5001+ employees</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="interests">Areas of Interest (select all that apply) *</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="interest-multi-agent" name="interests[]" value="multi-agent">
+                                <label for="interest-multi-agent">Multi-Agent Collaboration</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="interest-workflow" name="interests[]" value="workflow">
+                                <label for="interest-workflow">Workflow Orchestration</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="interest-deployment" name="interests[]" value="deployment">
+                                <label for="interest-deployment">Enterprise Deployment</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="interest-integration" name="interests[]" value="integration">
+                                <label for="interest-integration">Provider Integration</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="interest-governance" name="interests[]" value="governance">
+                                <label for="interest-governance">Ethical AI Governance</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="interest-enduser" name="interests[]" value="enduser">
+                                <label for="interest-enduser">End-User Interface</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="message">Additional Information</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Tell us about your specific use cases or requirements"></textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <div class="consent-checkbox">
+                            <input type="checkbox" id="consent" name="consent" required>
+                            <label for="consent">I agree to Lumina AI's <a href="privacy.html">Privacy Policy</a> and consent to being contacted about Lumina AI products and services. *</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button">Request Demo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-offices alt-bg">
+        <div class="container">
+            <h2 class="section-title">Our Offices</h2>
+            <div class="offices-grid">
+                <div class="office-card animate-on-scroll">
+                    <div class="office-image">
+                        <img src="../images/office-sf.jpg" alt="San Francisco Office">
+                    </div>
+                    <div class="office-info">
+                        <h3>San Francisco</h3>
+                        <p class="office-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            123 Innovation Way<br>
+                            San Francisco, CA 94105<br>
+                            United States
+                        </p>
+                        <p class="office-phone">
+                            <i class="fas fa-phone"></i>
+                            +1 (415) 555-0123
+                        </p>
+                        <p class="office-email">
+                            <i class="fas fa-envelope"></i>
+                            sf@luminaai.com
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="office-card animate-on-scroll">
+                    <div class="office-image">
+                        <img src="../images/office-london.jpg" alt="London Office">
+                    </div>
+                    <div class="office-info">
+                        <h3>London</h3>
+                        <p class="office-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            45 Tech Square<br>
+                            London EC2A 4BX<br>
+                            United Kingdom
+                        </p>
+                        <p class="office-phone">
+                            <i class="fas fa-phone"></i>
+                            +44 (0) 20 7123 4567
+                        </p>
+                        <p class="office-email">
+                            <i class="fas fa-envelope"></i>
+                            london@luminaai.com
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="office-card animate-on-scroll">
+                    <div class="office-image">
+                        <img src="../images/office-singapore.jpg" alt="Singapore Office">
+                    </div>
+                    <div class="office-info">
+                        <h3>Singapore</h3>
+                        <p class="office-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            78 Future Tower<br>
+                            Singapore 018956<br>
+                            Singapore
+                        </p>
+                        <p class="office-phone">
+                            <i class="fas fa-phone"></i>
+                            +65 6123 4567
+                        </p>
+                        <p class="office-email">
+                            <i class="fas fa-envelope"></i>
+                            singapore@luminaai.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>How quickly can Lumina AI be deployed in our environment?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Deployment timelines vary based on your specific requirements and environment complexity. Typically, a basic deployment can be completed in 2-4 weeks, while more complex enterprise-wide implementations may take 8-12 weeks. Our deployment team works closely with your IT department to ensure a smooth and efficient process.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>Which AI providers does Lumina AI integrate with?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Lumina AI is designed to be provider-agnostic and integrates with all major AI providers, including OpenAI, Anthropic, Google AI, Microsoft Azure AI, and many others. Our platform allows you to leverage the best capabilities from multiple providers simultaneously through our multi-agent collaboration system.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>How does Lumina AI ensure data privacy and security?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+   
+(Content truncated due to size limit. Use line ranges to read in chunks)

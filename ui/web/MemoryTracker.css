@@ -1,0 +1,332 @@
+/* MemoryTracker.css */
+
+.memory-tracker {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.memory-tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.memory-project-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.memory-project-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.memory-add-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color, #007AFF);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.memory-add-button:hover {
+  background-color: var(--primary-dark, #0062CC);
+}
+
+.memory-add-button:disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: not-allowed;
+}
+
+.memory-item-form {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease;
+}
+
+.memory-form-header {
+  margin-bottom: 0.5rem;
+}
+
+.memory-item-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.memory-form-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.memory-category-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.memory-category-selector select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.memory-form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.memory-save-button, .memory-cancel-button {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.memory-save-button {
+  background-color: var(--primary-color, #007AFF);
+  color: white;
+  border: none;
+}
+
+.memory-save-button:hover {
+  background-color: var(--primary-dark, #0062CC);
+}
+
+.memory-save-button:disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: not-allowed;
+}
+
+.memory-cancel-button {
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.memory-cancel-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.memory-items-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.empty-memory {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  opacity: 0.7;
+}
+
+.memory-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.memory-item {
+  padding: 0.75rem;
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.memory-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.memory-item.fact {
+  border-left: 3px solid var(--info-color, #5AC8FA);
+}
+
+.memory-item.decision {
+  border-left: 3px solid var(--secondary-color, #5856D6);
+}
+
+.memory-item.context {
+  border-left: 3px solid var(--primary-color, #007AFF);
+}
+
+.memory-item.reference {
+  border-left: 3px solid var(--warning-color, #FF9500);
+}
+
+.memory-item.high {
+  background-color: rgba(255, 59, 48, 0.05);
+}
+
+.memory-item-header {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.memory-item-icon {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.memory-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+}
+
+.memory-icon.fact {
+  background-color: var(--info-color, #5AC8FA);
+}
+
+.memory-icon.decision {
+  background-color: var(--secondary-color, #5856D6);
+}
+
+.memory-icon.context {
+  background-color: var(--primary-color, #007AFF);
+}
+
+.memory-icon.reference {
+  background-color: var(--warning-color, #FF9500);
+}
+
+.memory-item-text {
+  flex: 1;
+}
+
+.memory-item-details {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.memory-item-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.memory-importance-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.importance-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.importance-button {
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.importance-button.selected {
+  color: white;
+}
+
+.importance-button.low.selected {
+  background-color: var(--success-color, #34C759);
+  border-color: var(--success-color, #34C759);
+}
+
+.importance-button.medium.selected {
+  background-color: var(--warning-color, #FF9500);
+  border-color: var(--warning-color, #FF9500);
+}
+
+.importance-button.high.selected {
+  background-color: var(--error-color, #FF3B30);
+  border-color: var(--error-color, #FF3B30);
+}
+
+.memory-remove-button {
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+  border: 1px solid var(--error-color, #FF3B30);
+  color: var(--error-color, #FF3B30);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.memory-remove-button:hover {
+  background-color: var(--error-color, #FF3B30);
+  color: white;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .memory-tracker-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .memory-form-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .memory-form-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

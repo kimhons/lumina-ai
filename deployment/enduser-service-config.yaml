@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: enduser-service-config
+  namespace: lumina-ai
+data:
+  # Enhanced configuration for EndUser Service
+  ENABLE_ADVANCED_TASK_AUTONOMY: "true"
+  ENABLE_MEMORY_TRACKING: "true"
+  ENABLE_VISUAL_THINKING: "true"
+  ENABLE_PROACTIVE_SUGGESTIONS: "true"
+  ENABLE_CROSS_WORKSPACE_SEARCH: "true"
+  
+  # Task Autonomy Configuration
+  TASK_DECOMPOSITION_DEPTH: "3"
+  MAX_PARALLEL_TASKS: "5"
+  TASK_SUGGESTION_THRESHOLD: "0.75"
+  ENABLE_TASK_TEMPLATES: "true"
+  TOOL_INTEGRATION_FRAMEWORK_VERSION: "2.0"
+  
+  # Memory Tracking Configuration
+  AUTO_MEMORY_EXTRACTION: "true"
+  MEMORY_RELEVANCE_THRESHOLD: "0.7"
+  ENABLE_SEMANTIC_SEARCH: "true"
+  MEMORY_RETENTION_DAYS: "365"
+  CROSS_WORKSPACE_MEMORY: "true"
+  
+  # Visual Thinking Configuration
+  INTERACTIVE_THINKING_DISPLAY: "true"
+  THINKING_VISUALIZATION_TYPES: "standard,research,coding,creative"
+  ENABLE_THINKING_EXPORT: "true"
+  THINKING_DETAIL_LEVEL: "high"
+  
+  # Chat Interface Configuration
+  CONTEXT_WINDOW_SIZE: "16000"
+  CHAT_LENGTH_WARNING_THRESHOLD: "80"
+  ENABLE_SPECIALIZED_INPUT_MODES: "true"
+  ENABLE_VOICE_INTERFACE: "true"
+  ENABLE_CHAT_SUMMARIZATION: "true"
+  
+  # Workspace Configuration
+  ENABLE_WORKSPACE_TEMPLATES: "true"
+  ENABLE_WORKSPACE_ANALYTICS: "true"
+  MAX_WORKSPACES_PER_USER: "20"
+  ENABLE_WORKSPACE_SHARING: "true"
+  
+  # System Configuration
+  EXTERNAL_TOOL_INTEGRATION: "true"
+  ENABLE_OFFLINE_MODE: "true"
+  ERROR_RECOVERY_LEVEL: "advanced"
+  ENABLE_PERSONALIZATION: "true"
+  LOGGING_LEVEL: "detailed"
+  
+  # Performance Configuration
+  RESPONSE_TIME_TARGET_MS: "800"
+  MEMORY_CACHE_SIZE_MB: "512"
+  ENABLE_RESPONSE_STREAMING: "true"
+  ENABLE_BACKGROUND_PROCESSING: "true"

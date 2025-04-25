@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: lumina-ai-backup
+  namespace: lumina-ai
+spec:
+  schedule: "0 2 * * *"  # Run at 2 AM every day
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: lumina-ai-sa
+          containers:
+          - name: backup
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              # Create timestamp for backup
+              TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+              
+              # Backup all ConfigMaps
+              kubectl get configmaps -n lumina-ai -o yaml > /backups/configmaps-${TIMESTAMP}.yaml
+              
+              # Backup all Deployments
+              kubectl get deployments -n lumina-ai -o yaml > /backups/deployments-${TIMESTAMP}.yaml
+              
+              # Backup all Services
+              kubectl get services -n lumina-ai -o yaml > /backups/services-${TIMESTAMP}.yaml
+              
+              # Backup all Ingresses
+              kubectl get ingresses -n lumina-ai -o yaml > /backups/ingresses-${TIMESTAMP}.yaml
+              
+              # Compress backups
+              tar -czf /backups/lumina-ai-backup-${TIMESTAMP}.tar.gz /backups/*.yaml
+              
+              # Clean up individual YAML files
+              rm /backups/*.yaml
+              
+              # Upload to S3
+              aws s3 cp /backups/lumina-ai-backup-${TIMESTAMP}.tar.gz s3://lumina-ai-backups/k8s-backups/
+            volumeMounts:
+            - name: backup-volume
+              mountPath: /backups
+            env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: access-key
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: secret-key
+            - name: AWS_DEFAULT_REGION
+              value: us-west-2
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-volume
+            emptyDir: {}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-credentials
+  namespace: lumina-ai
+type: Opaque
+data:
+  # These are placeholder base64 values - in production, use actual secrets
+  access-key: UExBQ0VIT0xERVJfQUNDRVNTX0tFWQ==
+  secret-key: UExBQ0VIT0xERVJfU0VDUkVUX0tFWQ==

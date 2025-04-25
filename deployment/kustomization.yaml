@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+namespace: lumina-ai
+
+patchesStrategicMerge:
+- replicas-patch.yaml
+- config-patch.yaml
+- resources-patch.yaml
+- hpa-patch.yaml
+
+images:
+- name: ${UI_SERVICE_IMAGE}
+  newName: lumina-ai/ui-service
+  newTag: stable
+- name: ${DEPLOYMENT_SERVICE_IMAGE}
+  newName: lumina-ai/deployment-service
+  newTag: stable
+- name: ${PROVIDER_SERVICE_IMAGE}
+  newName: lumina-ai/provider-service
+  newTag: stable
+- name: ${GOVERNANCE_SERVICE_IMAGE}
+  newName: lumina-ai/governance-service
+  newTag: stable
+- name: ${ENDUSER_SERVICE_IMAGE}
+  newName: lumina-ai/enduser-service
+  newTag: stable
+- name: ${MARKETING_WEBSITE_IMAGE}
+  newName: lumina-ai/marketing-website
+  newTag: stable

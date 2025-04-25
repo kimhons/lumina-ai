@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testing-environment
+  namespace: lumina-ai
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: testing-environment
+  template:
+    metadata:
+      labels:
+        app: testing-environment
+    spec:
+      containers:
+      - name: testing-environment
+        image: ${TESTING_ENVIRONMENT_IMAGE}
+        ports:
+        - containerPort: 8084
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8084
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: log_level
+        - name: TESTING_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: testing_environment_config
+        - name: ENDUSER_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: enduser_service_url
+        - name: MAX_SANDBOX_COUNT
+          value: "10"
+        - name: SANDBOX_TIMEOUT_SECONDS
+          value: "300"
+        - name: SANDBOX_MEMORY_LIMIT_MB
+          value: "1024"
+        - name: SANDBOX_CPU_LIMIT
+          value: "0.5"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+        - name: testing-storage
+          mountPath: /app/testing-environment
+      volumes:
+      - name: testing-storage
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testing-environment
+  namespace: lumina-ai
+spec:
+  selector:
+    app: testing-environment
+  ports:
+  - port: 8084
+    targetPort: 8084
+  type: ClusterIP

@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: export-system
+  namespace: lumina-ai
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: export-system
+  template:
+    metadata:
+      labels:
+        app: export-system
+    spec:
+      containers:
+      - name: export-system
+        image: ${EXPORT_SYSTEM_IMAGE}
+        ports:
+        - containerPort: 8085
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8085
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8085
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: log_level
+        - name: EXPORT_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: export_system_config
+        - name: ENDUSER_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: enduser_service_url
+        - name: GITHUB_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: lumina-secrets
+              key: github_token
+              optional: true
+        - name: DOCKER_HUB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: lumina-secrets
+              key: docker_username
+              optional: true
+        - name: DOCKER_HUB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: lumina-secrets
+              key: docker_password
+              optional: true
+        - name: MAX_EXPORT_SIZE_MB
+          value: "500"
+        - name: EXPORT_TIMEOUT_SECONDS
+          value: "600"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+        - name: export-storage
+          mountPath: /app/export-system
+      volumes:
+      - name: export-storage
+        persistentVolumeClaim:
+          claimName: export-system-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: export-system
+  namespace: lumina-ai
+spec:
+  selector:
+    app: export-system
+  ports:
+  - port: 8085
+    targetPort: 8085
+  type: ClusterIP

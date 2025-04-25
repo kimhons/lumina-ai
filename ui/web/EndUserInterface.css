@@ -1,0 +1,112 @@
+/* EndUserInterface.css */
+
+.enduser-interface {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.workspace-content {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 200px);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.main-content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Prevents flex items from overflowing */
+}
+
+.side-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.empty-workspace {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 200px);
+}
+
+.empty-workspace-content {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  max-width: 500px;
+}
+
+.create-workspace-button {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color, #007AFF);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-workspace-button:hover {
+  background-color: var(--primary-dark, #0062CC);
+}
+
+/* Memory tracking for long-term projects */
+.memory-tracker-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+
+.memory-tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.memory-tracker-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.memory-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 1024px) {
+  .workspace-content {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .side-content {
+    flex-direction: row;
+    max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .side-content {
+    flex-direction: column;
+  }
+}

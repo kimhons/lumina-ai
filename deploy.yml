@@ -1,0 +1,234 @@
+name: Deploy Lumina AI to AWS EKS
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+env:
+  AWS_REGION: us-west-2
+  ECR_REPOSITORY: lumina-ai
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Build and test UI Service
+        working-directory: ./lumina-ai/ui
+        run: |
+          npm install
+          npm run test
+          npm run build
+
+      - name: Build and test EndUser Service
+        working-directory: ./lumina-ai/ui/enduser
+        run: |
+          npm install
+          npm run test
+          npm run build
+
+      - name: Build and test Backend Services
+        working-directory: ./lumina-ai/microservices
+        run: ./gradlew clean build test
+
+      - name: Build and test Marketing Website
+        working-directory: ./lumina-ai-website
+        run: |
+          npm install
+          npm run build
+
+  security-scan:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker images
+        run: |
+          docker build -t ${{ env.ECR_REPOSITORY }}/ui-service:${{ github.sha }} ./lumina-ai/ui
+          docker build -t ${{ env.ECR_REPOSITORY }}/enduser-service:${{ github.sha }} ./lumina-ai/ui/enduser
+          docker build -t ${{ env.ECR_REPOSITORY }}/deployment-service:${{ github.sha }} ./lumina-ai/microservices/deployment-service
+          docker build -t ${{ env.ECR_REPOSITORY }}/provider-service:${{ github.sha }} ./lumina-ai/microservices/provider-service
+          docker build -t ${{ env.ECR_REPOSITORY }}/governance-service:${{ github.sha }} ./lumina-ai/microservices/governance-service
+          docker build -t ${{ env.ECR_REPOSITORY }}/marketing-website:${{ github.sha }} ./lumina-ai-website
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.ECR_REPOSITORY }}/ui-service:${{ github.sha }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+  build-and-push:
+    needs: security-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push UI Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lumina-ai/ui
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/ui-service:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/ui-service:latest
+
+      - name: Build and push EndUser Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lumina-ai/ui/enduser
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/enduser-service:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/enduser-service:latest
+
+      - name: Build and push Deployment Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lumina-ai/microservices/deployment-service
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/deployment-service:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/deployment-service:latest
+
+      - name: Build and push Provider Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lumina-ai/microservices/provider-service
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/provider-service:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/provider-service:latest
+
+      - name: Build and push Governance Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lumina-ai/microservices/governance-service
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/governance-service:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/governance-service:latest
+
+      - name: Build and push Marketing Website
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lumina-ai-website
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/marketing-website:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/marketing-website:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.25.0'
+
+      - name: Install kustomize
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin/
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name lumina-ai-${{ github.event.inputs.environment || 'dev' }}-cluster --region ${{ env.AWS_REGION }}
+
+      - name: Update Kustomize
+        run: |
+          cd lumina-ai-deployment/kubernetes/overlays/${{ github.event.inputs.environment || 'dev' }}
+          kustomize edit set image \
+            ${UI_SERVICE_IMAGE}=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/ui-service:${{ github.sha }} \
+            ${DEPLOYMENT_SERVICE_IMAGE}=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/deployment-service:${{ github.sha }} \
+            ${PROVIDER_SERVICE_IMAGE}=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/provider-service:${{ github.sha }} \
+            ${GOVERNANCE_SERVICE_IMAGE}=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/governance-service:${{ github.sha }} \
+            ${ENDUSER_SERVICE_IMAGE}=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/enduser-service:${{ github.sha }} \
+            ${MARKETING_WEBSITE_IMAGE}=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/marketing-website:${{ github.sha }}
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -k lumina-ai-deployment/kubernetes/overlays/${{ github.event.inputs.environment || 'dev' }}
+
+      - name: Verify deployment
+        run: |
+          NAMESPACE=${{ github.event.inputs.environment == 'prod' && 'lumina-ai' || (github.event.inputs.environment == 'staging' && 'lumina-ai-staging' || 'lumina-ai-dev') }}
+          kubectl rollout status deployment/ui-service -n ${NAMESPACE} --timeout=300s
+          kubectl rollout status deployment/deployment-service -n ${NAMESPACE} --timeout=300s
+          kubectl rollout status deployment/provider-service -n ${NAMESPACE} --timeout=300s
+          kubectl rollout status deployment/governance-service -n ${NAMESPACE} --timeout=300s
+          kubectl rollout status deployment/enduser-service -n ${NAMESPACE} --timeout=300s
+          kubectl rollout status deployment/marketing-website -n ${NAMESPACE} --timeout=300s
+
+      - name: Post-deployment notification
+        if: success()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "✅ Successfully deployed Lumina AI to ${{ github.event.inputs.environment || 'dev' }} environment"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

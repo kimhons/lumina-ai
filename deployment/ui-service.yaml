@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-service
+  namespace: lumina-ai
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ui-service
+  template:
+    metadata:
+      labels:
+        app: ui-service
+    spec:
+      containers:
+      - name: ui-service
+        image: ${UI_SERVICE_IMAGE}
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: API_GATEWAY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: api_gateway_url
+        - name: AUTH_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: lumina-config
+              key: auth_service_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-service
+  namespace: lumina-ai
+spec:
+  selector:
+    app: ui-service
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

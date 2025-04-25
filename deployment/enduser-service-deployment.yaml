@@ -1,0 +1,314 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enduser-service
+  namespace: lumina-ai
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lumina-ai
+      service: enduser-service
+  template:
+    metadata:
+      labels:
+        app: lumina-ai
+        service: enduser-service
+    spec:
+      containers:
+      - name: enduser-service
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/lumina-ai/enduser-service:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: metrics
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "2Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: NODE_ENV
+        - name: ENABLE_ADVANCED_TASK_AUTONOMY
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_ADVANCED_TASK_AUTONOMY
+        - name: ENABLE_MEMORY_TRACKING
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_MEMORY_TRACKING
+        - name: ENABLE_VISUAL_THINKING
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_VISUAL_THINKING
+        - name: ENABLE_PROACTIVE_SUGGESTIONS
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_PROACTIVE_SUGGESTIONS
+        - name: ENABLE_CROSS_WORKSPACE_SEARCH
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_CROSS_WORKSPACE_SEARCH
+        - name: TASK_DECOMPOSITION_DEPTH
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: TASK_DECOMPOSITION_DEPTH
+        - name: MAX_PARALLEL_TASKS
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: MAX_PARALLEL_TASKS
+        - name: TASK_SUGGESTION_THRESHOLD
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: TASK_SUGGESTION_THRESHOLD
+        - name: ENABLE_TASK_TEMPLATES
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_TASK_TEMPLATES
+        - name: TOOL_INTEGRATION_FRAMEWORK_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: TOOL_INTEGRATION_FRAMEWORK_VERSION
+        - name: AUTO_MEMORY_EXTRACTION
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: AUTO_MEMORY_EXTRACTION
+        - name: MEMORY_RELEVANCE_THRESHOLD
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: MEMORY_RELEVANCE_THRESHOLD
+        - name: ENABLE_SEMANTIC_SEARCH
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_SEMANTIC_SEARCH
+        - name: MEMORY_RETENTION_DAYS
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: MEMORY_RETENTION_DAYS
+        - name: CROSS_WORKSPACE_MEMORY
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: CROSS_WORKSPACE_MEMORY
+        - name: INTERACTIVE_THINKING_DISPLAY
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: INTERACTIVE_THINKING_DISPLAY
+        - name: THINKING_VISUALIZATION_TYPES
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: THINKING_VISUALIZATION_TYPES
+        - name: ENABLE_THINKING_EXPORT
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_THINKING_EXPORT
+        - name: THINKING_DETAIL_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: THINKING_DETAIL_LEVEL
+        - name: CONTEXT_WINDOW_SIZE
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: CONTEXT_WINDOW_SIZE
+        - name: CHAT_LENGTH_WARNING_THRESHOLD
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: CHAT_LENGTH_WARNING_THRESHOLD
+        - name: ENABLE_SPECIALIZED_INPUT_MODES
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_SPECIALIZED_INPUT_MODES
+        - name: ENABLE_VOICE_INTERFACE
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_VOICE_INTERFACE
+        - name: ENABLE_CHAT_SUMMARIZATION
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_CHAT_SUMMARIZATION
+        - name: ENABLE_WORKSPACE_TEMPLATES
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_WORKSPACE_TEMPLATES
+        - name: ENABLE_WORKSPACE_ANALYTICS
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_WORKSPACE_ANALYTICS
+        - name: MAX_WORKSPACES_PER_USER
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: MAX_WORKSPACES_PER_USER
+        - name: ENABLE_WORKSPACE_SHARING
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_WORKSPACE_SHARING
+        - name: EXTERNAL_TOOL_INTEGRATION
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: EXTERNAL_TOOL_INTEGRATION
+        - name: ENABLE_OFFLINE_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_OFFLINE_MODE
+        - name: ERROR_RECOVERY_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ERROR_RECOVERY_LEVEL
+        - name: ENABLE_PERSONALIZATION
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_PERSONALIZATION
+        - name: LOGGING_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: LOGGING_LEVEL
+        - name: RESPONSE_TIME_TARGET_MS
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: RESPONSE_TIME_TARGET_MS
+        - name: MEMORY_CACHE_SIZE_MB
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: MEMORY_CACHE_SIZE_MB
+        - name: ENABLE_RESPONSE_STREAMING
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_RESPONSE_STREAMING
+        - name: ENABLE_BACKGROUND_PROCESSING
+          valueFrom:
+            configMapKeyRef:
+              name: enduser-service-config
+              key: ENABLE_BACKGROUND_PROCESSING
+        livenessProbe:
+          httpGet:
+            path: /health/liveness
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /health/readiness
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        - name: cache-volume
+          mountPath: /app/cache
+      volumes:
+      - name: config-volume
+        configMap:
+          name: enduser-service-config
+      - name: cache-volume
+        emptyDir: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: enduser-service
+  namespace: lumina-ai
+  labels:
+    app: lumina-ai
+    service: enduser-service
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  selector:
+    app: lumina-ai
+    service: enduser-service
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  - name: metrics
+    port: 9090
+    targetPort: metrics
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: enduser-service-hpa
+  namespace: lumina-ai
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: enduser-service
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60

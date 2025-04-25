@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-service
+spec:
+  replicas: 3  # Higher replicas for production environment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-service
+spec:
+  replicas: 3  # Higher replicas for production environment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provider-service
+spec:
+  replicas: 3  # Higher replicas for production environment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: governance-service
+spec:
+  replicas: 3  # Higher replicas for production environment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enduser-service
+spec:
+  replicas: 5  # Higher replicas for production environment - more for user-facing service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketing-website
+spec:
+  replicas: 3  # Higher replicas for production environment
